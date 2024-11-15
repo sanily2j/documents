@@ -1,0 +1,9 @@
+When you want to add new folder to git repo, follow below steps 
+- git init( assuming you are in curremt project folder)
+- git add . 
+- git commit -m "Adding Project"
+- git remote add origin <repository URL>
+- git push origin main( your branch)
+
+If you are facing some errors while pushing , do 
+- git pull <repo_URL> main
