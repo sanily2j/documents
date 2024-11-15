@@ -7,3 +7,6 @@ When you want to add new folder to git repo, follow below steps
 
 If you are facing some errors while pushing , do 
 - git pull <repo_URL> main
+
+If you are facing Fatal error -> fatal: LF would be replaced by CRLF , then execute below command
+- git config --global core.safecrlf false
