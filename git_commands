@@ -10,3 +10,6 @@ If you are facing some errors while pushing , do
 
 If you are facing Fatal error -> fatal: LF would be replaced by CRLF , then execute below command
 - git config --global core.safecrlf false
+
+Compile a java file to .class file with required dependecies
+$ "C:\\Program Files\\Eclipse_DEV\\Jdks\\jdk1.5\\bin\\javac.exe" -cp "lib/commons-httpclient-3.1.jar;lib/jcl-over-slf4j-1.5.2.jar;lib/pcpJava-1.7.1.jar;lib/log4j-1.2.15.jar;lib/cxl-toolboxxml-2.6.1.jar" -d C:\\Users\\E491181\\Downloads C:\\Users\\E491181\\Downloads\\RequeteurFournisseur.java
