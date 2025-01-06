@@ -1,0 +1,125 @@
+Steps to migrate Struts aplication to AWS cloud using Fargate
+- YOu need to containreze the application 
+  Create a docker file with below contents
+# Use an official Java runtime as a parent image
+FROM openjdk:11-jre-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the application WAR file to the container
+COPY your-app.war /app/your-app.war
+
+# Install Tomcat
+RUN apt-get update && apt-get install -y wget && \
+    wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.41/bin/apache-tomcat-9.0.41.tar.gz && \
+    tar xzf apache-tomcat-9.0.41.tar.gz && \
+    mv apache-tomcat-9.0.41 /usr/local/tomcat && \
+    rm apache-tomcat-9.0.41.tar.gz
+
+# Copy the WAR file to the Tomcat webapps directory
+RUN cp /app/your-app.war /usr/local/tomcat/webapps/
+
+# Expose the port Tomcat is running on
+EXPOSE 8080
+
+# Run Tomcat
+CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
+
+2 - Manage configuration file 
+create config.yml file 
+# config.yml
+database:
+  url: jdbc:mysql://localhost:3306/yourdb
+  username: yourusername
+  password: yourpassword
+
+server:
+  port: 8080
+
+logging:
+  level: INFO
+
+3 - Create a java class that reads properties form yml file with SnakeYml library
+import org.yaml.snakeyaml.Yaml;
+import java.io.InputStream;
+import java.util.Map;
+
+public class ConfigManager {
+    private static Map<String, Object> config;
+
+    static {
+        Yaml yaml = new Yaml();
+        try (InputStream in = ConfigManager.class.getResourceAsStream("/config.yml")) {
+            config = yaml.load(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getDatabaseUrl() {
+        return (String) ((Map<String, Object>) config.get("database")).get("url");
+    }
+
+    public static String getDatabaseUsername() {
+        return (String) ((Map<String, Object>) config.get("database")).get("username");
+    }
+
+    public static String getDatabasePassword() {
+        return (String) ((Map<String, Object>) config.get("database")).get("password");
+    }
+
+    public static int getServerPort() {
+        return (Integer) config.get("server.port");
+    }
+
+    public static String getLoggingLevel() {
+        return (String) config.get("logging.level");
+    }
+}
+
+Using AWS Systems Manager Parameter Store:
+Store configuration values in Parameter Store and use the AWS SDK to retrieve these values in your application
+
+3 Deploy to AWS Fargate
+Create ECS defination task
+{
+  "family": "your-app",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "your-app-container",
+      "image": "your-docker-image",
+      "essential": true,
+      "memory": 512,
+      "cpu": 256,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080
+        }
+      ],
+      "environment": [
+        {
+          "name": "DATABASE_URL",
+          "value": "jdbc:mysql://localhost:3306/yourdb"
+        },
+        {
+          "name": "DATABASE_USERNAME",
+          "value": "yourusername"
+        },
+        {
+          "name": "DATABASE_PASSWORD",
+          "value": "yourpassword"
+        }
+      ]
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512"
+}
+Create ECS service to run and manage your tasks
+aws ecs create-service --cluster your-cluster --service-name your-service --task-definition your-app --desired-count 1 --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=[subnet-12345678],securityGroups=[sg-12345678],assignPublicIp=ENABLED}"
