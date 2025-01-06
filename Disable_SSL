@@ -1,0 +1,14 @@
+How to disable SSL in httpd.conf file for a particular location
+
+<VirtualHost _default_:42443>
+    SSLEngine off
+ 
+    # Handle the specific URL without SSL
+<Location "/your_specific_url">
+        # SSL is disabled for this specific URL
+</Location>
+</VirtualHost>
+
+if your url is pointing to different port for example : 80 then listen it on 80 port 
+
+Listens 127.0.0.1 80
