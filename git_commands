@@ -16,3 +16,9 @@ $ "C:\\Program Files\\Eclipse_DEV\\Jdks\\jdk1.5\\bin\\javac.exe" -cp "lib/common
 
 Tomcat configuration when u are getting WS linked errors due to server not able to manage clinet response
 keepAliveTimeout="60000" maxHttpHeaderSize="8192" maxSwallowSize="2097152"   
+
+When we are getting memory leakage issue in Struts application when server is shutdown and it restarts then  we get memory leakages 
+or resources DB issues, this is because some threads are not closed properly ( DB threads) leading to shoortage of DB resourcesd when server starts 
+To avoid this we can create a class that implements ServletWebListener annonated by @WebListener and override method contextDestroyed .
+This method is called whenever the server is shutdown ( and in tthis method we can check if any datasource is open we can explicity shutdown all open DB resources) 
+
