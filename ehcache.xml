@@ -9,3 +9,6 @@ timeToLiveSeconds: The maximum time an element can stay in the cache regardless 
 diskPersistent: Whether the disk store persists between restarts.
 diskExpiryThreadIntervalSeconds: The interval at which the disk store expiry thread runs.
 memoryStoreEvictionPolicy: The policy used to evict elements from the memory store (e.g., LRU - Least Recently Used)
+
+In production  timeToIdleSeconds="600" timeToLiveSeconds="3600"  should not be kept 0
+also diskStorePath should not point to /tmp folder , use insteaed custom folder 
