@@ -1,0 +1,11 @@
+<defaultCache maxElementsInMemory="10000" overflowToDisk="true" eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="3600" diskPersistent="false" diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU" />
+
+
+maxElementsInMemory: The maximum number of elements that can be stored in memory.
+overflowToDisk: Whether elements should overflow to disk when the memory limit is reached.
+eternal: If set to true, the elements in the cache will never expire.
+timeToIdleSeconds: The maximum time an element can stay in the cache without being accessed.
+timeToLiveSeconds: The maximum time an element can stay in the cache regardless of access.
+diskPersistent: Whether the disk store persists between restarts.
+diskExpiryThreadIntervalSeconds: The interval at which the disk store expiry thread runs.
+memoryStoreEvictionPolicy: The policy used to evict elements from the memory store (e.g., LRU - Least Recently Used)
