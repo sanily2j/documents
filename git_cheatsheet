@@ -1,0 +1,154 @@
+Git Cheatsheet
+
+Configuration
+-------------
+Set user name and email:
+  git config --global user.name "Your Name"
+  git config --global user.email "your.email@example.com"
+  Sets the user name and email for all repositories on your system.
+
+Check configuration:
+  git config --list
+  Displays the current configuration settings.
+
+Repository Setup
+----------------
+Initialize a new repository:
+  git init
+  Creates a new Git repository in the current directory.
+
+Clone an existing repository:
+  git clone <repository_url>
+  Creates a copy of an existing repository.
+
+Basic Commands
+--------------
+Check the status of your files:
+  git status
+  Shows the status of changes as untracked, modified, or staged.
+
+Add files to staging area:
+  git add <file>
+  git add .
+  Adds changes in the specified file or all files to the staging area.
+
+Commit changes:
+  git commit -m "Commit message"
+  Records the changes in the repository with a message.
+
+View commit history:
+  git log
+  Displays the commit history.
+
+Branching and Merging
+---------------------
+Create a new branch:
+  git branch <branch_name>
+  Creates a new branch.
+
+Switch to a branch:
+  git checkout <branch_name>
+  Switches to the specified branch.
+
+Create and switch to a new branch:
+  git checkout -b <branch_name>
+  Creates and switches to a new branch.
+
+Merge a branch into the current branch:
+  git merge <branch_name>
+  Merges the specified branch into the current branch.
+
+Delete a branch:
+  git branch -d <branch_name>
+  Deletes the specified branch.
+
+Remote Repositories
+-------------------
+Add a remote repository:
+  git remote add origin <repository_url>
+  Adds a remote repository.
+
+Fetch changes from a remote repository:
+  git fetch origin
+  Fetches changes from the remote repository.
+
+Push changes to a remote repository:
+  git push origin <branch_name>
+  Pushes changes to the remote repository.
+
+Pull changes from a remote repository:
+  git pull origin <branch_name>
+  Pulls changes from the remote repository.
+
+Stashing
+--------
+Stash changes:
+  git stash
+  Temporarily saves changes for later use.
+
+Apply stashed changes:
+  git stash apply
+  Applies stashed changes.
+
+List stashes:
+  git stash list
+  Lists all stashed changes.
+
+Drop a stash:
+  git stash drop
+  Deletes a stash.
+
+Cherry-Picking
+--------------
+Cherry-pick a commit:
+  git cherry-pick <commit_hash>
+  Applies the changes from a specific commit to the current branch.
+
+Abort a cherry-pick:
+  git cherry-pick --abort
+  Aborts the cherry-pick process.
+
+Continue after resolving conflicts:
+  git cherry-pick --continue
+  Continues the cherry-pick process after resolving conflicts.
+
+Rebasing
+--------
+Rebase the current branch onto another branch:
+  git rebase <branch_name>
+  Reapplies commits on top of another base tip.
+
+Abort a rebase:
+  git rebase --abort
+  Aborts the rebase process.
+
+Continue after resolving conflicts:
+  git rebase --continue
+  Continues the rebase process after resolving conflicts.
+
+Resetting
+---------
+Soft reset (keep changes in working directory):
+  git reset --soft <commit_hash>
+  Resets to a specific commit, keeping changes in the working directory.
+
+Mixed reset (default, keep changes in working directory but unstage them):
+  git reset --mixed <commit_hash>
+  Resets to a specific commit, unstaging changes.
+
+Hard reset (discard all changes):
+  git reset --hard <commit_hash>
+  Resets to a specific commit, discarding all changes.
+
+Tagging
+-------
+Create a tag:
+  git tag <tag_name>
+  Creates a new tag.
+
+Push tags to remote:
+  git push origin --tags
+  Pushes tags to the remote repository.
+
+Delete a tag:
+  git tag -
