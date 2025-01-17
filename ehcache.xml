@@ -12,3 +12,6 @@ memoryStoreEvictionPolicy: The policy used to evict elements from the memory sto
 
 In production  timeToIdleSeconds="600" timeToLiveSeconds="3600"  should not be kept 0
 also diskStorePath should not point to /tmp folder , use insteaed custom folder 
+
+when u migrate your application from ehcache 1.5 to 2.x , you need to add in 2.x version in ehcache.xml file xsd schema location inside <ehcache> tag .
+  In absence of that , you will have unexpected  behviour in production 
