@@ -25,3 +25,6 @@ or resources DB issues, this is because some threads are not closed properly ( D
 To avoid this we can create a class that implements ServletWebListener annonated by @WebListener and override method contextDestroyed .
 This method is called whenever the server is shutdown ( and in tthis method we can check if any datasource is open we can explicity shutdown all open DB resources) 
 
+print first 3 4 lines 
+tail -f /users2/ead00/log/eadError.log | awk '/IllegalStateException|FwkException/ {print; for(i=1;i<=3;i++) {getline; print}}'
+
