@@ -1,0 +1,58 @@
+Garbage Collection (GC) in Java is the process of automatically identifying and reclaiming memory that is no longer in use by the program. This helps in managing memory efficiently and prevents memory leaks. The Java Virtual Machine (JVM) handles garbage collection, and it uses various algorithms and techniques to perform this task.
+
+Key Concepts of Java Garbage Collection
+Heap Memory:
+
+The heap is the runtime data area from which memory for all class instances and arrays is allocated.
+The heap is divided into two main areas: the Young Generation and the Old Generation.
+Young Generation:
+
+This is where all new objects are allocated and aged.
+It is further divided into three regions: Eden Space, Survivor Space S0, and Survivor Space S1.
+Most objects are initially allocated in the Eden space. When the Eden space fills up, a minor GC is triggered, and live objects are moved to one of the Survivor spaces.
+Old Generation:
+
+This is where long-lived objects are stored.
+Objects that survive multiple garbage collection cycles in the Young Generation are eventually promoted to the Old Generation.
+When the Old Generation fills up, a major GC (or full GC) is triggered.
+Permanent Generation (Metaspace in Java 8 and later):
+
+This area contains metadata required by the JVM to describe the classes and methods used in the application.
+In Java 8 and later, the Permanent Generation has been replaced by Metaspace, which is allocated in native memory.
+Types of Garbage Collectors
+Java provides several types of garbage collectors, each with different performance characteristics:
+
+Serial Garbage Collector:
+
+Uses a single thread to perform all garbage collection work.
+Suitable for small applications with single-threaded environments.
+Parallel Garbage Collector (Throughput Collector):
+
+Uses multiple threads to perform minor collections in parallel.
+Suitable for applications that can benefit from high throughput.
+Concurrent Mark-Sweep (CMS) Collector:
+
+Aims to minimize pause times by performing most of the garbage collection work concurrently with the application threads.
+Suitable for applications that require low latency.
+G1 Garbage Collector (Garbage-First):
+
+Divides the heap into regions and performs garbage collection in a way that prioritizes regions with the most garbage.
+Suitable for applications with large heaps and that require predictable pause times.
+How Garbage Collection Works
+Mark-and-Sweep Algorithm:
+
+Mark Phase: The garbage collector identifies all live objects by traversing the object graph starting from the root references (e.g., static fields, local variables on the stack).
+Sweep Phase: The garbage collector reclaims the memory occupied by objects that are not marked as live.
+Generational Garbage Collection:
+
+Objects are categorized based on their age.
+Young Generation is collected frequently with minor GCs.
+Old Generation is collected less frequently with major GCs.
+Minor GC:
+
+Occurs when the Eden space is full.
+Live objects are moved to the Survivor spaces, and eventually to the Old Generation if they survive multiple minor GCs.
+Major GC (Full GC):
+
+Occurs when the Old Generation is full.
+Involves a complete stop-the-world pause where all application threads are stopped, and the entire heap is collected.
