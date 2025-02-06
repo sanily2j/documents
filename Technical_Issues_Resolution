@@ -14,7 +14,7 @@ If you are facing Fatal error -> fatal: LF would be replaced by CRLF , then exec
 Compile a java file to .class file with required dependecies
 $ "C:\\Program Files\\Eclipse_DEV\\Jdks\\jdk1.5\\bin\\javac.exe" -cp "lib/commons-httpclient-3.1.jar;lib/jcl-over-slf4j-1.5.2.jar;lib/pcpJava-1.7.1.jar;lib/log4j-1.2.15.jar;lib/cxl-toolboxxml-2.6.1.jar" -d C:\\Users\\E491181\\Downloads C:\\Users\\E491181\\Downloads\\RequeteurFournisseur.java
 
-Tomcat configuration when u are getting WS linked errors due to server not able to manage clinet response
+
 
 on-prem to AWS , lift-shift  - challeneges 
 https://www.infosys.com/iki/techcompass/aws-migration.html  
@@ -25,9 +25,10 @@ or resources DB issues, this is because some threads are not closed properly ( D
 To avoid this we can create a class that implements ServletWebListener annonated by @WebListener and override method contextDestroyed .
 This method is called whenever the server is shutdown ( and in tthis method we can check if any datasource is open we can explicity shutdown all open DB resources) 
 
-print first 3 4 lines 
+print first 3 4 lines ,linux commands
 tail -f /users2/ead00/log/eadError.log | awk '/IllegalStateException|FwkException/ {print; for(i=1;i<=3;i++) {getline; print}}'
 
-When we upgrade AS from WAS to Tomcat , and we are receieving errors concerning WS , Connection is reset by peer 
+Tomcat configuration when u are getting WS linked errors due to server not able to manage clinet response
+and When we upgrade AS from WAS to Tomcat , and we are receieving errors concerning WS , Connection is reset by peer 
 Then you need to check buffersize, timeout and also check TLS version to 1.2 or 1.3 
 for this u can add -Dhttps.protocols=TLSv1.2 in JVM arguments 
