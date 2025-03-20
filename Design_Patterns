@@ -1,0 +1,9 @@
+Creational Desing Pattrens
+
+1 Builder DP
+- When we have complex process to construct an object that involves mutitiple steps , builder pattern can help us 
+- we remove the logic of creation of object , and  absctract it out into sub clasess
+
+UML diagram
+Start by creating a builder -> we identify the parts of the product and provide the methods to create that parts
+create the method to assemble or create the actual object 
