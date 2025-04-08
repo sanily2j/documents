@@ -1,0 +1,91 @@
+Step-by-Step Workflow
+1. User Login Request
+The user sends a POST request to the /login endpoint with their credentials (username and password).
+The /login endpoint is permitted in the SecurityConfig (antMatchers("/login", "/api/user/register").permitAll()), so no authentication is required to access it.
+2. Authentication
+The login endpoint validates the user's credentials using the UserDetailsService and generates a JWT token if the credentials are valid.
+The generated JWT token is sent back to the client in the response.
+3. Secured Endpoint Request
+The client includes the JWT token in the Authorization header (e.g., Authorization: Bearer <JWT_TOKEN>) when making requests to secured endpoints.
+4. Security Filter Chain
+The SecurityFilterChain in SecurityConfig ensures that all requests (except those explicitly permitted) are authenticated.
+The JwtFilter is added to the filter chain (addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)), so it processes requests before the UsernamePasswordAuthenticationFilter.
+5. JwtFilter Execution
+The JwtFilter intercepts every request and performs the following steps:
+Extract JWT Token: It retrieves the Authorization header and extracts the JWT token.
+Validate JWT Token: It uses the JwtService to validate the token and extract the username.
+Load User Details: It retrieves the user's details using the UserDetailsService.
+Set Authentication: If the token is valid, it creates a UsernamePasswordAuthenticationToken and sets it in the SecurityContextHolder.
+6. Access Secured Endpoint
+Once the JwtFilter sets the authentication in the SecurityContextHolder, the request proceeds to the secured endpoint.
+The endpoint checks the user's roles and permissions (if applicable) before processing the request.
+
++-------------------+       +-------------------+       +-------------------+
+|   User Login      |       |   SecurityConfig  |       |   JwtFilter       |
+|   POST /login     |       |   (Filter Chain)  |       |                   |
++-------------------+       +-------------------+       +-------------------+
+         |                           |                           |
+         |                           |                           |
+         v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+| Validate User     |       | Check if Request  |       | Extract JWT Token |
+| Credentials       |       | is Permitted      |       | from Header       |
++-------------------+       +-------------------+       +-------------------+
+         |                           |                           |
+         |                           |                           |
+         v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+| Generate JWT      |       | Forward to Filter |       | Validate JWT      |
+| Token             |       | Chain if Secured  |       | Token             |
++-------------------+       +-------------------+       +-------------------+
+         |                           |                           |
+         |                           |                           |
+         v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+| Return JWT Token  |       | Pass to JwtFilter|       | Load User Details |
+| to Client         |       |                  |       | from UserDetails  |
++-------------------+       +-------------------+       +-------------------+
+         |                           |                           |
+         |                           |                           |
+         v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+| Client Sends      |       | JwtFilter Sets   |       | Forward Request    |
+| JWT in Header     |       | Authentication   |       | to Secured         |
+| for Secured       |       | in SecurityContext|      | Endpoint           |
+| Endpoint          |       +-------------------+       +-------------------+
++-------------------+
+
+Detailed Understanding
+SecurityConfig
+Authentication Provider:
+
+Configures the DaoAuthenticationProvider to use the UserDetailsService and BCryptPasswordEncoder for validating user credentials.
+Security Filter Chain:
+
+Disables CSRF (csrf().disable()).
+Configures CORS (cors()).
+Permits access to /login and /api/user/register without authentication.
+Requires authentication for all other endpoints (anyRequest().authenticated()).
+Configures the session policy as stateless (SessionCreationPolicy.STATELESS).
+Adds the JwtFilter to the filter chain before the UsernamePasswordAuthenticationFilter.
+JwtFilter
+Intercepts Requests:
+
+Intercepts every request and checks for the Authorization header.
+Extracts and Validates JWT:
+
+Extracts the JWT token from the Authorization header.
+Validates the token using the JwtService.
+Loads User Details:
+
+Retrieves the user's details using the UserDetailsService.
+Sets Authentication:
+
+Creates a UsernamePasswordAuthenticationToken and sets it in the SecurityContextHolder.
+Forwards the Request:
+
+Forwards the request to the next filter in the chain if authentication is successful.
+Key Points
+Stateless Authentication: The application uses stateless authentication, meaning no session is maintained on the server. Each request must include a valid JWT token.
+JWT Validation: The JwtFilter ensures that only requests with valid JWT tokens are allowed to access secured endpoints.
+Extensibility: You can easily extend this setup to include role-based access control or additional security measures.
