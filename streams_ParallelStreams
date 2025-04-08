@@ -1,0 +1,36 @@
+Why parallelStream() May Degrade Performance in Spring Batch
+Spring Batch Already Manages Threads:
+
+Spring Batch is designed to handle parallel processing efficiently using its own thread management (e.g., TaskExecutor, Partitioner, or Multi-threaded Step).
+Introducing parallelStream() adds another layer of parallelism, which can lead to thread contention and resource exhaustion.
+Thread Contention:
+
+parallelStream() uses the common ForkJoinPool by default, which shares threads with other parts of the application.
+If Spring Batch is already using a thread pool, adding parallelStream() can cause contention for CPU and memory resources, leading to degraded performance.
+Shared Resources:
+
+In your code, the page object is a shared instance variable. Using parallelStream() without proper synchronization can lead to race conditions and unpredictable behavior.
+Overhead of Managing Threads:
+
+parallelStream() introduces additional overhead for splitting tasks, managing threads, and merging results. This overhead may outweigh the benefits, especially
+if Spring Batch is already optimized for parallel processing.
+
+When to Avoid parallelStream()
+If Spring Batch is already configured for parallel processing (e.g., using a TaskExecutor or Partitioner).
+If the workload is I/O-bound (e.g., reading/writing files) rather than CPU-bound.
+If the dataset is small, as the overhead of managing threads in parallelStream() may outweigh the benefits.
+
+When to Use stream()
+Sequential Processing: When you want to process files one at a time in the order they appear in the list.
+Avoiding Overhead: When you want to avoid the overhead of managing additional threads (as with parallelStream()).
+Spring Batch Integration: When Spring Batch is already handling parallelism (e.g., via TaskExecutor or Partitioner).
+When to Avoid stream()
+If you need to process files in parallel to improve performance, stream() may not be sufficient. In such cases, consider using Spring Batch's built-in parallel processing features (e.g., multi-threaded steps or partitioning).
+Comparison: stream() vs. parallelStream()
+
+Feature	stream()	parallelStream()
+Processing	Sequential |	Parallel
+Thread Management	Single-threaded |	Uses ForkJoinPool (multi-threaded)
+Overhead	Minimal	| Higher due to thread management
+Order of Processing	Maintained	 | Not guaranteed
+Use Case	Sequential processing, low overhead	| Parallel processing for large datasets
