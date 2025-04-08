@@ -34,3 +34,36 @@ Thread Management	Single-threaded |	Uses ForkJoinPool (multi-threaded)
 Overhead	Minimal	| Higher due to thread management
 Order of Processing	Maintained	 | Not guaranteed
 Use Case	Sequential processing, low overhead	| Parallel processing for large datasets
+
+
+The ForkJoinPool is a special thread pool introduced in Java 7 as part of the java.util.concurrent package. It is designed to efficiently execute tasks that can be broken down into smaller subtasks (a process called divide-and-conquer) and then combined to produce the final result. It is the foundation of parallelism in Java's Stream API and parallelStream().
+
+Key Features of ForkJoinPool
+Work-Stealing Algorithm:
+
+The ForkJoinPool uses a work-stealing algorithm, where idle threads "steal" tasks from other threads' queues to keep the CPU busy and improve performance.
+This ensures efficient utilization of threads in the pool.
+Divide-and-Conquer:
+
+Tasks submitted to the ForkJoinPool are recursively split into smaller subtasks using the fork() method.
+Once the subtasks are small enough, they are executed, and their results are combined using the join() method.
+Parallelism:
+
+The ForkJoinPool is optimized for parallelism and is used internally by Java's parallelStream() and CompletableFuture.
+Common Pool:
+
+Java provides a common ForkJoinPool that is shared by all parallelStream() and CompletableFuture tasks unless explicitly overridden.
+The size of the common pool is determined by the number of available processors (Runtime.getRuntime().availableProcessors()).
+How ForkJoinPool Works
+Task Submission:
+
+Tasks are submitted to the ForkJoinPool using the invoke(), execute(), or submit() methods.
+Task Splitting:
+
+The task is split into smaller subtasks using the fork() method. Each subtask is added to the pool's task queue.
+Task Execution:
+
+Worker threads in the pool execute the tasks. If a thread becomes idle, it steals tasks from other threads' queues.
+Task Joining:
+
+The results of the subtasks are combined using the join() method to produce the final result.
